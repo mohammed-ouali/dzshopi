@@ -177,7 +177,7 @@ class ProductImage(Base):
         nullable=False,
     )
 
-    imagekit_file_id: Mapped[str | None] = mapped_column(
+    imagekit_file_id: Mapped[str] = mapped_column(
         String(255),
         unique=True,
         nullable=False,

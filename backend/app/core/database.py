@@ -10,8 +10,8 @@ from backend.app.core.config import settings
 
 
 engine = create_async_engine(
-    url=settings.DATABASE_URL,
-    echo=False,
+    url=settings.database_ur,
+    echo=settings.debug,
     pool_pre_ping=True,
 )
 
