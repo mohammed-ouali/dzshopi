@@ -1,9 +1,9 @@
 
 import { useState } from "react";
+import WilcomBaner from "./WilcomBaner";
 
-import logo from '../../assets/Logo.png'
+import logo from "../../assets/Logo.png";
 import {
-  ShoppingBag,
   ShoppingCart,
   Search,
   UserRound,
@@ -15,13 +15,15 @@ import {
 } from "lucide-react";
 
 const categories = [
-  "Électronique",
-  "Téléphones",
-  "Informatique",
-  "Livres",
-  "Maison & Cuisine",
-  "Mode",
-  "Jeux & Loisirs",
+  "Electronics",
+  "Computers & IT",
+  "Fashion & Clothing",
+  "Home & Kitchen",
+  "Beauty & Personal Care",
+  "Sports & Fitness",
+  "Food & Groceries",
+  "Baby & Kids",
+  "Jewelry & Watches",
 ];
 
 export default function Navbar({ cartCount = 0 }) {
@@ -30,14 +32,17 @@ export default function Navbar({ cartCount = 0 }) {
   const [categoriesOpen, setCategoriesOpen] = useState(false);
 
   const links = [
-    { label: "Accueil", href: "/" },
-    { label: "Promotions", href: "/promotions" },
-    { label: "Nouveautés", href: "/new-arrivals" },
+    { label: "Home", href: "/" },
+    { label: " Best Deals", href: "/promotions" },
+    { label: "New Arrivals", href: "/new-arrivals" },
+    { label:"About Us",href:"/about" },
+    { label:"Contact Us",href:"/contact" },
   ];
 
   function handleSearch(e) {
     e.preventDefault();
     const query = search.trim();
+
     if (query) {
       window.location.href =
         `/products?search=${encodeURIComponent(query)}`;
@@ -47,16 +52,14 @@ export default function Navbar({ cartCount = 0 }) {
   return (
     <header className="sticky top-0 z-50 w-full bg-white shadow-sm">
       {/* Top announcement */}
-      <div className="bg-[#0B2E26] px-4 py-2 text-center text-xs text-white sm:text-sm">
-        Découvrez vos produits préférés sur DzShopi
-      </div>
+      <WilcomBaner />
 
       {/* Main navbar */}
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-4 lg:px-8">
         {/* Logo */}
         <a
           href="/"
-          aria-label="DzShopi - Accueil"
+          aria-label="DzShopi - Home"
           className="flex shrink-0 items-center gap-2"
         >
           <img src={logo} alt="DzShopi" className="w-40" />
@@ -71,13 +74,14 @@ export default function Navbar({ cartCount = 0 }) {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Rechercher un produit..."
-              aria-label="Rechercher un produit"
+              placeholder="Search for a product..."
+              aria-label="Search for a product"
               className="w-full bg-transparent px-4 py-3 text-sm text-gray-800 outline-none"
             />
+
             <button
               type="submit"
-              aria-label="Rechercher"
+              aria-label="Search"
               className="m-1 flex items-center justify-center rounded-lg bg-[#00A86B] px-4 text-white transition hover:bg-[#008F5B]"
             >
               <Search size={19} />
@@ -92,12 +96,12 @@ export default function Navbar({ cartCount = 0 }) {
             className="hidden items-center gap-2 text-gray-700 transition hover:text-[#00A86B] sm:flex"
           >
             <UserRound size={22} />
-            <span className="hidden text-sm lg:block">mano</span>
+            <span className="hidden text-sm lg:block">My Account</span>
           </a>
 
           <a
             href="/wishlist"
-            aria-label="Favoris"
+            aria-label="Wishlist"
             className="hidden text-gray-700 hover:text-[#00A86B] sm:block"
           >
             <Heart size={22} />
@@ -105,13 +109,15 @@ export default function Navbar({ cartCount = 0 }) {
 
           <a
             href="/cart"
-            aria-label={`Panier, ${cartCount} articles`}
+            aria-label={`Shopping cart, ${cartCount} items`}
             className="relative flex items-center gap-2 rounded-xl bg-[#0B2E26] px-3 py-3 text-white transition hover:bg-[#17483B]"
           >
             <ShoppingCart size={21} />
+
             <span className="hidden text-sm font-medium lg:block">
-              Panier
+              Cart
             </span>
+
             {cartCount > 0 && (
               <span className="absolute -right-2 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#00A86B] px-1 text-xs font-bold text-white">
                 {cartCount}
@@ -121,7 +127,9 @@ export default function Navbar({ cartCount = 0 }) {
 
           <button
             type="button"
-            aria-label={mobileOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-label={
+              mobileOpen ? "Close menu" : "Open menu"
+            }
             aria-expanded={mobileOpen}
             onClick={() => setMobileOpen(!mobileOpen)}
             className="rounded-lg p-2 text-[#0B2E26] hover:bg-gray-100 md:hidden"
@@ -142,7 +150,7 @@ export default function Navbar({ cartCount = 0 }) {
               className="flex items-center gap-2 py-4 text-sm font-semibold text-[#0B2E26] hover:text-[#00A86B]"
             >
               <Package size={18} />
-              Toutes les catégories
+              All Categories
               <ChevronDown size={16} />
             </button>
 
@@ -181,13 +189,14 @@ export default function Navbar({ cartCount = 0 }) {
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Rechercher..."
-              aria-label="Rechercher un produit"
+              placeholder="Search..."
+              aria-label="Search for a product"
               className="min-w-0 flex-1 rounded-xl border border-gray-200 px-3 py-3 text-sm outline-none focus:border-[#00A86B]"
             />
+
             <button
               type="submit"
-              aria-label="Rechercher"
+              aria-label="Search"
               className="rounded-xl bg-[#00A86B] px-4 text-white"
             >
               <Search size={20} />
@@ -195,15 +204,19 @@ export default function Navbar({ cartCount = 0 }) {
           </form>
 
           <div className="flex flex-col">
-            <a href="/" className="border-b border-gray-100 py-3 text-sm">
-              Accueil
+            <a
+              href="/"
+              className="border-b border-gray-100 py-3 text-sm"
+            >
+              Home
             </a>
+
             <button
               type="button"
               onClick={() => setCategoriesOpen(!categoriesOpen)}
               className="flex items-center justify-between border-b border-gray-100 py-3 text-left text-sm"
             >
-              Toutes les catégories
+              All Categories
               <ChevronDown size={17} />
             </button>
 
@@ -229,10 +242,11 @@ export default function Navbar({ cartCount = 0 }) {
             ))}
 
             <a href="/account" className="py-3 text-sm">
-              Mon compte
+              My Account
             </a>
+
             <a href="/wishlist" className="py-3 text-sm">
-              Mes favoris
+              My Wishlist
             </a>
           </div>
         </div>
