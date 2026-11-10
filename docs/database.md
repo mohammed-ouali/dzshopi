@@ -1,5 +1,5 @@
 # Database overview
-## Entity–relationship diagram
+## Entity–Relationship Diagram
 
 ```mermaid
 erDiagram
@@ -131,7 +131,7 @@ erDiagram
 
 `||` denotes exactly one, `o|` zero or one, and `o{` zero or more. Each order item must reference one order, but the schema permits orders with no items. `imagekit_file_id` is non-null and unique in the actual model and migration.
 
-## Entity responsibilities
+## Entity Responsibilities
 
 | Entity | Responsibility |
 |---|---|
@@ -148,7 +148,7 @@ erDiagram
 | `order_items` | Purchased-item snapshots and optional link to a current variant. |
 | `reviews` | User product rating and optional comment. |
 
-## Relationships and deletion policy
+## Relationships and Deletion Policy
 
 | Parent | Child | Foreign key | Nullable? | `ON DELETE` |
 |---|---|---|---|---|
@@ -167,9 +167,8 @@ erDiagram
 | `orders` | `order_items` | `order_items.order_id` | No | `RESTRICT` |
 | `product_variants` | `order_items` | `order_items.product_variant_id` | Yes | `SET NULL` |
 
-ORM behavior supplements these actions: cart and wishlist contents use delete-orphan cascades; product images use delete-orphan; order items have no delete cascade and `Order.items` uses `passive_deletes="all"`, leaving the database `RESTRICT` rule to reject order deletion when items exist. User deletion cascades to its cart, wishlist, and reviews in the ORM as well; order rows are retained and detached by the nullable FK.
 
-## Important constraints and indexes
+## Constraints and Indexes
 
 | Table | Unique constraints / indexes | Check constraints |
 |---|---|---|
@@ -185,11 +184,3 @@ ORM behavior supplements these actions: cart and wishlist contents use delete-or
 | `orders` | Indexes `(user_id, created_at)` and `(status, created_at)` | COD-only payment method; amounts nonnegative; `total = subtotal + delivery_fee`; generated status check for the six `OrderStatus` values |
 | `order_items` | Indexes `order_id`, `product_variant_id` | `quantity > 0`; amounts nonnegative; `line_total = quantity * unit_price` |
 | `reviews` | Unique `(user_id, product_id)`; index `product_id` | `rating BETWEEN 1 AND 5` |
-
-## Design notes
-
-- `orders.user_id` is nullable, supporting guest checkout in the schema. Recipient name, phone, wilaya, and delivery desk are stored on the order; deleting a user sets the FK to null.
-- `order_items` stores product name, variant attributes, quantity, unit price, and line total as historical snapshots. Its variant link is nullable and becomes null if the variant is deleted.
-- Products and variants have `is_active`; categories also have `is_active`. These columns represent deactivation state; they do not themselves enforce an application deletion policy.
-- `product_images` stores `image_url` and a required unique `imagekit_file_id`; image assets themselves are external to PostgreSQL. The schema does not implement external asset lifecycle operations.
-- Guest carts are not represented by a separate table; the schema only has carts tied to users.
