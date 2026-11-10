@@ -11,7 +11,7 @@ from app.core.exceptions import DomainException
 from app.core.exception_handlers import domain_exception_handler, validation_exception_handler, unhandled_exception_handler
 
 app = FastAPI(
-    title=settings.app_name,
+    title=f"{settings.app_name} API",
     description=(
         "The DzShopi API provides the HTTP interface to the DzShopi e-commerce "
         "platform. It exposes endpoints for product catalog browsing, category "
@@ -20,7 +20,7 @@ app = FastAPI(
         "shopping experience, with authentication required only for "
         "customer-specific features."
     ),
-    version=settings.version,
+    version="0.1.0",
     debug=settings.debug
 )
 
