@@ -9,7 +9,7 @@ Manages products, their variants, and associated images.
 | Route | Description | Response Schema | Accepted Schema | Status Codes |
 |---|---|---|---|---|
 | `GET /products` | Retrieve a paginated list of products. | `PaginatedResponse[ProductResponse]` | Query: `page`, `limit`, `q`, `category_id`, `sort_by`, `order` | 200, 422 |
-| `GET /products/{product_id}` | Retrieve a product by ID. | `ProductResponse` | Path: `product_id` | 200, 404 |
+| `GET /products/{product_id}` | Retrieve a product by ID. | `ProductDetailResponse` | Path: `product_id` | 200, 404 |
 | `POST /products` | Create a product. | `ProductResponse` | `ProductCreate` | 201, 409, 422 |
 | `PATCH /products/{product_id}` | Partially update a product. | `ProductResponse` | Path: `product_id`; Body: `ProductUpdate` | 200, 404, 409, 422 |
 | `DELETE /products/{product_id}` | Deactivate a product. | None | Path: `product_id` | 204, 404 |
