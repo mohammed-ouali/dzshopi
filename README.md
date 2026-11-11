@@ -11,7 +11,6 @@ The project is built as a modular monolith, with a clear separation between the 
 **Frontend**
 
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
@@ -45,7 +44,7 @@ Make sure the following tools are installed:
 - **Git** — repository management.
 - **Python 3.12+** — backend runtime.
 - **uv** — Python dependency and environment management.
-- **Node.js (LTS)** — frontend development and build tooling.
+- **Node.js** — frontend development and build tooling.
 - **Docker & Docker Compose** — containerized deployment.
 
 ## Getting Started
@@ -53,7 +52,7 @@ Make sure the following tools are installed:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/mohammed-ouali/e-commerce.git
+git clone https://github.com/mohammed-ouali/dzshopi.git
 cd e-commerce
 ```
 
