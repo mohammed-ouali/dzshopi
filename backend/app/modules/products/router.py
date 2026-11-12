@@ -55,7 +55,7 @@ MOCK_VARIANTS = [
         product_id=1,
         sku="PHONE-001",
         price=999.99,
-        stock_quanntity=10,
+        stock_quantity=10,
         attributes={"memory": "128GB", "ram": "4GB"},
         is_active=True,
     ),
@@ -64,7 +64,7 @@ MOCK_VARIANTS = [
         product_id=1,
         sku="PHONE-002",
         price=1099.99,
-        stock_quanntity=5,
+        stock_quantity=5,
         attributes={"memory": "256GB", "ram": "4GB"},
         is_active=True,
     ),
@@ -74,14 +74,14 @@ MOCK_IMAGES = [
     ProductImageResponse(
         id=1,
         product_id=1,
-        url="https://example.com/phone-1.jpg",
-        file_id="mock_file_001",
+        image_url="https://example.com/phone-1.jpg",
+        imagekit_file_id="mock_file_001",
     ),
     ProductImageResponse(
         id=2,
         product_id=1,
-        url="https://example.com/phone-1-side.jpg",
-        file_id="mock_file_002",
+        image_url="https://example.com/phone-1-side.jpg",
+        imagekit_file_id="mock_file_002",
     ),
 ]
 
@@ -390,8 +390,8 @@ async def create_product_image(
     return ProductImageResponse(
         id=3,
         product_id=1,
-        url="https://example.com/new-product-image.jpg",
-        file_id="mock_file_003",
+        image_url="https://example.com/new-product-image.jpg",
+        imagekit_file_id="mock_file_003",
     )
 
 
