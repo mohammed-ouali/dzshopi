@@ -1,6 +1,9 @@
 
 import { useState } from "react";
 
+import logo from "../../assets/Logo.png";
+
+
 import {
   ShoppingBag,
   Mail,
@@ -25,7 +28,7 @@ const Footer = () => {
   const [showAllCategories, setShowAllCategories] = useState(false);
 
   return (
-    <footer className="bg-[#0B2E26] text-white">
+    <footer className="bg-[#011510] text-white">
 
       {/* Newsletter */}
       <div className="border-b border-white/10">
@@ -75,13 +78,7 @@ const Footer = () => {
 
             <a href="/" className="inline-flex items-center gap-2 group">
 
-              <div className="bg-[#00A86B] p-2 rounded-xl group-hover:scale-105 transition duration-300">
-                <ShoppingBag size={25} />
-              </div>
-
-              <span className="text-2xl font-extrabold tracking-tight">
-                Dz<span className="text-[#00A86B]">Shopi</span>
-              </span>
+ <img src={logo} alt="DzShopi" className="w-40" />
 
             </a>
 
