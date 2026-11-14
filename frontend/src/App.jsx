@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from './components/NavBar'
 import Footer from './components/Footer'
 import HroiSection from './components/HroiSection'
+import ServiceFeatures from './components/ServiceFeatures'
 
 const App = () => {
   return (
