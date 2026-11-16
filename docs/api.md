@@ -1,5 +1,15 @@
 # API Overview
 
+### Categories
+
+| Route | Description | Response Schema | Accepted Schema | Status Codes |
+|---|---|---|---|---|
+| `GET /categories` | Retrieve all categories. | `list[CategoryResponse]` | Query: `is_active` | 200, 422 |
+| `GET /categories/{category_id}` | Retrieve a category by ID. | `CategoryResponse` | Path: `category_id` | 200, 404 |
+| `POST /categories` | Create a category. | `CategoryResponse` | `CategoryCreate` | 201, 409, 422 |
+| `PATCH /categories/{category_id}` | Partially update a category. | `CategoryResponse` | Path: `category_id`; Body: `CategoryUpdate` | 200, 404, 409, 422 |
+| `DELETE /categories/{category_id}` | Deactivate a category. | None | Path: `category_id` | 204, 404 |
+
 ## Products
 
 Manages products, their variants, and associated images.
@@ -8,7 +18,7 @@ Manages products, their variants, and associated images.
 
 | Route | Description | Response Schema | Accepted Schema | Status Codes |
 |---|---|---|---|---|
-| `GET /products` | Retrieve a paginated list of products. | `PaginatedResponse[ProductResponse]` | Query: `page`, `limit`, `q`, `category_id`, `sort_by`, `order` | 200, 422 |
+| `GET /products` | Retrieve a paginated list of products. | `PaginatedResponse[ProductResponse]` | Query: `page`, `limit`, `q`, `category_id`, `is_active`, `sort_by`, `order` | 200, 422 |
 | `GET /products/{product_id}` | Retrieve a product by ID. | `ProductDetailResponse` | Path: `product_id` | 200, 404 |
 | `POST /products` | Create a product. | `ProductResponse` | `ProductCreate` | 201, 409, 422 |
 | `PATCH /products/{product_id}` | Partially update a product. | `ProductResponse` | Path: `product_id`; Body: `ProductUpdate` | 200, 404, 409, 422 |

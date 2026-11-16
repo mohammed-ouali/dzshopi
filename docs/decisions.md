@@ -45,6 +45,8 @@
 - **Nested Resources:** Variants and images are nested under their parent product.
 - **No Duplicate Parent IDs:** Parent identifiers are obtained from URL paths rather than duplicated in request bodies.
 - **Mock Endpoints:** Representative schema-valid responses are used to establish and test the frontend contract before database integration.
+- **Database-Level Activation Filtering (`is_active`):** Filtering by activation status (`is_active`) is handled at the database query level via query parameters rather than relying on frontend filtering, ensuring accurate pagination counts, reduced network payloads, and fast indexed SQL queries.
+- **Product Card Cover Image:** `ProductResponse` includes an optional `primary_image` (the product image with position 0) so catalog and list views can render product thumbnails without fetching all images or variants.
 
 ## 5. Security & Authentication
 
