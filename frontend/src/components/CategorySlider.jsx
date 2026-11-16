@@ -34,21 +34,62 @@ const CategorySlider = () => {
   const scroll = (direction) => {
     if (!sliderRef.current) return;
 
-    sliderRef.current.scrollBy({
-      left: direction === "left" ? -300 : 300,
+    const slider = sliderRef.current;
+    const firstItem = slider.firstElementChild;
+
+    if (!firstItem) return;
+
+    const gap = 16;
+    const itemWidth = firstItem.getBoundingClientRect().width;
+
+    slider.scrollBy({
+      left: direction === "left"
+        ? -(itemWidth + gap)
+        : itemWidth + gap,
       behavior: "smooth",
     });
   };
 
   return (
-    <section className="w-full bg-white p-10">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="w-full bg-white py-8">
+      <div className="w-full px-3 md:px-10 ">
 
+        {/* Header */}
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-[#0B2E26]">
+              Shop by Category
+            </h2>
+
+            <p className="mt-1 text-sm text-gray-500">
+              Explore our product categories
+            </p>
+          </div>
+
+          {/* Navigation */}
+          <div className="flex gap-2">
+            <button
+              onClick={() => scroll("left")}
+              aria-label="Previous category"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 text-[#0B2E26] transition hover:bg-[#0B2E26] hover:text-white"
+            >
+              <ChevronLeft size={20} />
+            </button>
+
+            <button
+              onClick={() => scroll("right")}
+              aria-label="Next category"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 text-[#0B2E26] transition hover:bg-[#0B2E26] hover:text-white"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        </div>
 
         {/* Categories Slider */}
         <div
           ref={sliderRef}
-          className="flex gap-5 overflow-x-auto scroll-smooth pb-4 px-25 scrollbar-hide"
+          className="flex w-full snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth py-3 scrollbar-hide"
         >
           {categories.map((category) => {
             const Icon = category.icon;
@@ -56,10 +97,10 @@ const CategorySlider = () => {
             return (
               <button
                 key={category.name}
-                className="group flex p-3 min-w-[120px] flex-col items-center gap-3"
+                className="group flex min-w-[150px] shrink-0 snap-start flex-col items-center justify-center gap-4 rounded-2xl border border-gray-100 bg-[#F8FAF9] px-5 py-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#00A86B] hover:bg-[#F0F7F4] hover:shadow-md"
               >
-                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#F0F7F4] text-[#0B2E26] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#0B2E26] group-hover:text-white">
-                  <Icon size={32} strokeWidth={1.7} />
+                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white text-[#0B2E26] shadow-sm transition-all duration-300 group-hover:bg-[#0B2E26] group-hover:text-white">
+                  <Icon size={28} strokeWidth={1.7} />
                 </div>
 
                 <span className="whitespace-nowrap text-sm font-semibold text-gray-700 transition group-hover:text-[#00A86B]">
