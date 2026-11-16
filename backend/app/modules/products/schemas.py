@@ -80,6 +80,7 @@ class ProductUpdate(BaseModel):
 
 class ProductResponse(ProductBase):
     id: int
+    primary_image: ProductImageResponse | None = None
     created_at: datetime
     updated_at: datetime
 
