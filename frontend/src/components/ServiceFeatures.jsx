@@ -20,15 +20,20 @@ const ServiceFeatures = () => {
     },
   ];
 
+
   return (
-    <div className="flex flex-wrap items-center gap-x-8 gap-y-5 mt-8">
+    <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5">
       {features.map((feature, index) => {
         const Icon = feature.icon;
 
         return (
-          <div key={index} className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-xl bg-white/10
-              border border-white/10 flex items-center justify-center">
+          <div
+            key={index}
+            className={`flex items-center gap-3 ${
+              index === 2 ? "hidden md:flex" : "flex"
+            }`}
+          >
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-white/10">
               <Icon size={23} className="text-emerald-300" />
             </div>
 
@@ -36,7 +41,7 @@ const ServiceFeatures = () => {
               <h3 className="text-sm font-bold text-white">
                 {feature.title}
               </h3>
-              <p className="text-xs text-white/60 mt-1">
+              <p className="mt-1 text-xs text-white/60">
                 {feature.description}
               </p>
             </div>

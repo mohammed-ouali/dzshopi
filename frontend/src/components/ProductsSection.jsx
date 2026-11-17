@@ -347,7 +347,7 @@ const SpecialOffers = () => {
 
             {/* Content */}
             <div className="p-3 sm:p-4">
-              <p className="mb-1 text-xs font-semibold text-emerald-600">
+              <p className="mb-1 text-xs  font-semibold text-emerald-600">
                 {offer.category}
               </p>
 
@@ -365,7 +365,7 @@ const SpecialOffers = () => {
                 </span>
               </div>
 
-              <button className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#0B2E26] py-2.5 text-xs font-bold text-white transition hover:bg-emerald-600 sm:py-3 sm:text-sm">
+              <button className="mt-4 flex w-full hover items-center hover:cursor-pointer  justify-center gap-2 rounded-xl bg-[#0B2E26] py-2.5 text-xs font-bold text-white transition hover:bg-emerald-600 sm:py-3 sm:text-sm">
                 <ShoppingCart size={16} />
                 Add to Cart
               </button>
@@ -379,7 +379,7 @@ const SpecialOffers = () => {
         <button
           onClick={() => changePage(currentPage - 1)}
           disabled={currentPage === 1}
-          className="flex h-10 items-center gap-1 rounded-xl border border-gray-200 px-3 text-sm font-semibold text-gray-700 transition hover:border-emerald-600 hover:bg-emerald-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex h-10 items-center gap-1  hover:cursor-pointer rounded-xl border border-gray-200 px-3 text-sm font-semibold text-gray-700 transition hover:border-emerald-600 hover:bg-emerald-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
         >
           <ChevronLeft size={17} />
           <span className="hidden sm:inline">Previous</span>
@@ -390,7 +390,7 @@ const SpecialOffers = () => {
             <button
               key={page}
               onClick={() => changePage(page)}
-              className={`h-10 w-10 rounded-xl text-sm font-bold transition ${
+              className={`h-10 w-10 rounded-xl text-sm hover:cursor-pointer font-bold transition ${
                 currentPage === page
                   ? "bg-[#0B2E26] text-white shadow-md"
                   : "border border-gray-200 text-gray-700 hover:border-emerald-600 hover:text-emerald-600"
@@ -404,7 +404,7 @@ const SpecialOffers = () => {
         <button
           onClick={() => changePage(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="flex h-10 items-center gap-1 rounded-xl border border-gray-200 px-3 text-sm font-semibold text-gray-700 transition hover:border-emerald-600 hover:bg-emerald-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex h-10 items-center gap-1 hover:cursor-pointer rounded-xl border border-gray-200 px-3 text-sm font-semibold text-gray-700 transition hover:border-emerald-600 hover:bg-emerald-600 hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
         >
           <span className="hidden sm:inline">Next</span>
           <ChevronRight size={17} />

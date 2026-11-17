@@ -132,14 +132,14 @@ const SpecialOffers = () => {
           <div className="flex shrink-0 items-center gap-2">
             <button
               onClick={() => scroll("left")}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 text-gray-700 transition hover:bg-[#0B2E26] hover:text-white"
+              className="flex h-10 w-10 items-center hover:cursor-pointer justify-center rounded-xl border border-gray-200 text-gray-700 transition hover:bg-[#0B2E26] hover:text-white"
             >
               <ChevronLeft size={20} />
             </button>
 
             <button
               onClick={() => scroll("right")}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 text-gray-700 transition hover:bg-[#0B2E26] hover:text-white"
+              className="flex h-10 w-10 items-center hover:cursor-pointer justify-center rounded-xl border border-gray-200 text-gray-700 transition hover:bg-[#0B2E26] hover:text-white"
             >
               <ChevronRight size={20} />
             </button>
@@ -195,7 +195,7 @@ const SpecialOffers = () => {
                 </div>
 
                 {/* Add to Cart */}
-                <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#0B2E26] py-2.5 text-xs font-bold text-white transition hover:bg-emerald-700">
+                <button className="flex w-full hover:cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#0B2E26] py-2.5 text-xs font-bold text-white transition hover:bg-emerald-700">
                   <ShoppingCart size={15} />
                   Add to Cart
                 </button>
@@ -206,7 +206,7 @@ const SpecialOffers = () => {
 
         {/* View All */}
         <div className="mt-8 flex justify-center">
-          <button className="flex items-center gap-2 rounded-xl border border-[#0B2E26] px-7 py-3 text-sm font-bold text-[#0B2E26] transition hover:bg-[#0B2E26] hover:text-white">
+          <button className="flex hover:cursor-pointer items-center gap-2 rounded-xl border border-[#0B2E26] px-7 py-3 text-sm font-bold text-[#0B2E26] transition hover:bg-[#0B2E26] hover:text-white">
             View All Offers
             <ArrowRight size={17} />
           </button>

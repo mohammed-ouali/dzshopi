@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import WilcomBaner from "./WilcomBaner";
 
 import logo from "../../assets/Logo.png";
@@ -31,12 +31,36 @@ export default function Navbar({ cartCount = 0 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [categoriesOpen, setCategoriesOpen] = useState(false);
 
+  const categoriesRef = useRef(null);
+  const mobileCategoriesRef = useRef(null);
+
+  // Close categories when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      const clickedDesktop =
+        categoriesRef.current?.contains(event.target);
+
+      const clickedMobile =
+        mobileCategoriesRef.current?.contains(event.target);
+
+      if (!clickedDesktop && !clickedMobile) {
+        setCategoriesOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const links = [
     { label: "Home", href: "/" },
     { label: " Best Deals", href: "/promotions" },
     { label: "New Arrivals", href: "/new-arrivals" },
-    { label:"About Us",href:"/about" },
-    { label:"Contact Us",href:"/contact" },
+    { label: "About Us", href: "/about" },
+    { label: "Contact Us", href: "/contact" },
   ];
 
   function handleSearch(e) {
@@ -82,7 +106,7 @@ export default function Navbar({ cartCount = 0 }) {
             <button
               type="submit"
               aria-label="Search"
-              className="m-1 flex items-center justify-center rounded-lg bg-[#00A86B] px-4 text-white transition hover:bg-[#008F5B]"
+              className="m-1 flex hover:cursor-pointer items-center justify-center rounded-lg bg-[#00A86B] px-4 text-white transition hover:bg-[#008F5B]"
             >
               <Search size={19} />
             </button>
@@ -96,7 +120,9 @@ export default function Navbar({ cartCount = 0 }) {
             className="hidden items-center gap-2 text-gray-700 transition hover:text-[#00A86B] sm:flex"
           >
             <UserRound size={22} />
-            <span className="hidden text-sm lg:block">My Account</span>
+            <span className="hidden text-sm lg:block">
+              My Account
+            </span>
           </a>
 
           <a
@@ -127,12 +153,13 @@ export default function Navbar({ cartCount = 0 }) {
 
           <button
             type="button"
-            aria-label={
-              mobileOpen ? "Close menu" : "Open menu"
-            }
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="rounded-lg p-2 text-[#0B2E26] hover:bg-gray-100 md:hidden"
+            onClick={() => {
+              setMobileOpen(!mobileOpen);
+              setCategoriesOpen(false);
+            }}
+            className="rounded-lg p-2 hover:cursor-pointer text-[#0B2E26] hover:bg-gray-100 md:hidden"
           >
             {mobileOpen ? <X size={25} /> : <Menu size={25} />}
           </button>
@@ -142,12 +169,12 @@ export default function Navbar({ cartCount = 0 }) {
       {/* Desktop navigation */}
       <nav className="hidden border-t border-gray-100 md:block">
         <div className="mx-auto flex max-w-7xl items-center gap-8 px-8">
-          <div className="relative">
+          <div className="relative" ref={categoriesRef}>
             <button
               type="button"
               onClick={() => setCategoriesOpen(!categoriesOpen)}
               aria-expanded={categoriesOpen}
-              className="flex items-center gap-2 py-4 text-sm font-semibold text-[#0B2E26] hover:text-[#00A86B]"
+              className="flex items-center hover:cursor-pointer gap-2 py-4 text-sm font-semibold text-[#0B2E26] hover:text-[#00A86B]"
             >
               <Package size={18} />
               All Categories
@@ -197,7 +224,7 @@ export default function Navbar({ cartCount = 0 }) {
             <button
               type="submit"
               aria-label="Search"
-              className="rounded-xl bg-[#00A86B] px-4 text-white"
+              className="rounded-xl hover:cursor-pointer bg-[#00A86B] px-4 text-white"
             >
               <Search size={20} />
             </button>
@@ -211,25 +238,33 @@ export default function Navbar({ cartCount = 0 }) {
               Home
             </a>
 
-            <button
-              type="button"
-              onClick={() => setCategoriesOpen(!categoriesOpen)}
-              className="flex items-center justify-between border-b border-gray-100 py-3 text-left text-sm"
-            >
-              All Categories
-              <ChevronDown size={17} />
-            </button>
+            <div ref={mobileCategoriesRef}>
+              <button
+                type="button"
+                onClick={() => setCategoriesOpen(!categoriesOpen)}
+                className="flex hover:cursor-pointer items-center justify-between border-b border-gray-100 py-3 text-left text-sm w-full"
+              >
+                All Categories
+                <ChevronDown
+                  size={17}
+                  className={`transition-transform ${
+                    categoriesOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
 
-            {categoriesOpen &&
-              categories.map((category) => (
-                <a
-                  key={category}
-                  href={`/category/${encodeURIComponent(category)}`}
-                  className="py-2 pl-4 text-sm text-gray-600"
-                >
-                  {category}
-                </a>
-              ))}
+              {categoriesOpen &&
+                categories.map((category) => (
+                  <a
+                    key={category}
+                    href={`/category/${encodeURIComponent(category)}`}
+                    className="block py-2 pl-4 text-sm text-gray-600"
+                    onClick={() => setCategoriesOpen(false)}
+                  >
+                    {category}
+                  </a>
+                ))}
+            </div>
 
             {links.slice(1).map((link) => (
               <a

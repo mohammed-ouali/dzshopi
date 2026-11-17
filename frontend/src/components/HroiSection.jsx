@@ -26,7 +26,7 @@ const HeroSection = () => {
       {/* MAIN CONTAINER */}
 <div className="relative flex min-h-[480px] w-full flex-col lg:mx-auto items-center justify-center gap-8 px-5 py-12 sm:px-8 md:flex-row md:gap-28 md:px-10 md:py-10">
         {/* LEFT CONTENT */}
-        <div className="z-10 w-full text-center lg:w-[52%] lg:ml-22  lg:text-left">
+        <div className="z-10 w-full text-center lg:w-[52%] lg:ml-36  lg:text-left">
           <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-emerald-600/40 px-3 py-1.5 text-xs font-semibold sm:mb-5 sm:px-4 sm:py-2 sm:text-sm">
             <Tag size={16} />
             Mega Sale
@@ -46,7 +46,7 @@ const HeroSection = () => {
           <div className="mt-6 flex flex-col items-center gap-4 min-[480px]:flex-row min-[480px]:justify-center sm:mt-7 sm:gap-5 lg:justify-start">
             <button
               type="button"
-              className="group flex w-full items-center justify-center gap-3 rounded-full bg-[#43df58] px-6 py-3 font-bold text-black transition hover:bg-[#65f477] hover:shadow-[0_0_25px_rgba(67,223,88,0.4)] min-[480px]:w-auto sm:px-7 sm:py-3.5"
+              className="group flex hover:cursor-pointer w-full hover:cousur-pointer items-center justify-center gap-3 rounded-full bg-[#43df58] px-6 py-3 font-bold text-black transition hover:bg-[#65f477] hover:shadow-[0_0_25px_rgba(67,223,88,0.4)] min-[480px]:w-auto sm:px-7 sm:py-3.5"
             >
               Shop Now
               <ArrowRight size={20} className="transition group-hover:translate-x-1" />
@@ -54,7 +54,7 @@ const HeroSection = () => {
 
             <button
               type="button"
-              className="flex items-center gap-3 text-sm font-medium transition hover:text-[#50e65e]"
+              className="flex items-center hover:cursor-pointer gap-3 text-sm font-medium transition hover:text-[#50e65e]"
             >
               <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white">
                 <Play size={16} fill="currentColor" />
@@ -168,7 +168,7 @@ const HeroSection = () => {
                   <button
                     type="button"
                     aria-label="View offer"
-                    className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#002d22] text-white transition hover:bg-[#50e65e] hover:text-black sm:h-12 sm:w-12"
+                    className="flex h-11 w-11 hover:cursor-pointer items-center justify-center rounded-2xl bg-[#002d22] text-white transition hover:bg-[#50e65e] hover:text-black sm:h-12 sm:w-12"
                   >
                     <ArrowRight size={22} />
                   </button>

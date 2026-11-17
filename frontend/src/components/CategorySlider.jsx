@@ -71,7 +71,7 @@ const CategorySlider = () => {
             <button
               onClick={() => scroll("left")}
               aria-label="Previous category"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 text-[#0B2E26] transition hover:bg-[#0B2E26] hover:text-white"
+              className="flex h-10 w-10 hover:cursor-pointer items-center justify-center rounded-xl border border-gray-200 text-[#0B2E26] transition hover:bg-[#0B2E26] hover:text-white"
             >
               <ChevronLeft size={20} />
             </button>
@@ -79,7 +79,7 @@ const CategorySlider = () => {
             <button
               onClick={() => scroll("right")}
               aria-label="Next category"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200 text-[#0B2E26] transition hover:bg-[#0B2E26] hover:text-white"
+              className="flex h-10 w-10 hover:cursor-pointer items-center justify-center rounded-xl border border-gray-200 text-[#0B2E26] transition hover:bg-[#0B2E26] hover:text-white"
             >
               <ChevronRight size={20} />
             </button>
@@ -97,7 +97,7 @@ const CategorySlider = () => {
             return (
               <button
                 key={category.name}
-                className="group flex min-w-[150px] shrink-0 snap-start flex-col items-center justify-center gap-4 rounded-2xl border border-gray-100 bg-[#F8FAF9] px-5 py-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#00A86B] hover:bg-[#F0F7F4] hover:shadow-md"
+                className="group flex min-w-[150px] hover:cursor-pointer shrink-0 snap-start flex-col items-center justify-center gap-4 rounded-2xl border border-gray-100 bg-[#F8FAF9] px-5 py-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#00A86B] hover:bg-[#F0F7F4] hover:shadow-md"
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white text-[#0B2E26] shadow-sm transition-all duration-300 group-hover:bg-[#0B2E26] group-hover:text-white">
                   <Icon size={28} strokeWidth={1.7} />
