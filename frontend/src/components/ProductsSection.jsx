@@ -5,6 +5,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import ProductFilters from "./ProductFilters";
 
 const offers = [
   {
@@ -323,6 +324,8 @@ const SpecialOffers = () => {
           </p>
         </div>
       </div>
+             <ProductFilters/>  
+      
 
       {/* Products Grid */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-6">

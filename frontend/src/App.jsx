@@ -5,17 +5,12 @@ import CategorySlider from './components/CategorySlider'
 import SpecialOffers from './components/SpecialOffers'
 import NewArrivals from './components/NewArrivals'
 import ProductsSection from './components/ProductsSection'
-import ProductFilters from './components/ProductFilters'
+import BestDeals from '../pages/BestDeals'
 const App = () => {
   return (
     <div className='min-h-screen bg-gray-100'>
       <Navbar/>
-      <HroiSection/>
-      <CategorySlider/>
-      <SpecialOffers/>
-       <NewArrivals/> 
-       <ProductsSection/>   
-       <ProductFilters/>  
+     <BestDeals/>
       <Footer/>
     </div>
   )

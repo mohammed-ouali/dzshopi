@@ -88,7 +88,7 @@ const NewArrivals = () => {
   };
 
   return (
-    <section className="w-full bg-white">
+    <section className="w-full py-12 bg-white">
       <div className="w-full px-4 sm:px-6 lg:px-8">
 
         <div className="mb-8 flex items-end justify-between gap-4">
@@ -183,7 +183,7 @@ const NewArrivals = () => {
         </div>
 
         {/* View All */}
-        <div className="mt-8 flex justify-center">
+        <div className="mt-8 flex justify-center ">
           <button className="flex hover:cursor-pointer items-center gap-2 rounded-xl border border-[#0B2E26] px-7 py-3 text-sm font-bold text-[#0B2E26] transition hover:bg-[#0B2E26] hover:text-white">
             View All New Arrivals
             <ArrowRight size={17} />
