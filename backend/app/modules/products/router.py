@@ -1,22 +1,23 @@
 
 from datetime import datetime, timezone
+
 from fastapi import APIRouter, Path, Query, status
 from fastapi.responses import Response
 
 from app.core.exception_handlers import ProblemDetails
-from app.shared.pagination import PaginatedResponse
 from app.modules.products.schemas import (
     ProductCreate,
-    ProductUpdate,
-    ProductResponse,
     ProductDetailResponse,
-    ProductVariantCreate,
-    ProductVariantUpdate,
-    ProductVariantResponse,
     ProductImageCreate,
-    ProductImageUpdate,
     ProductImageResponse,
+    ProductImageUpdate,
+    ProductResponse,
+    ProductUpdate,
+    ProductVariantCreate,
+    ProductVariantResponse,
+    ProductVariantUpdate,
 )
+from app.shared.pagination import PaginatedResponse
 
 router = APIRouter(
     prefix="/products",

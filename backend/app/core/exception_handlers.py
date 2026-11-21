@@ -1,12 +1,13 @@
-from fastapi import status
-from fastapi import Request
+from typing import Any, Dict, Optional
+
+from fastapi import Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
-from pydantic import Field
-from typing import Any, Dict, Optional
+from pydantic import BaseModel, Field
+
 from app.core.exceptions import DomainException
+
 
 class ProblemDetails(BaseModel):
     type: str = Field(
@@ -63,11 +64,11 @@ async def validation_exception_handler(
         {
         "name": "->".join(str(loc) for loc in error["loc"]),
         "reason": error["msg"]
-        } 
+        }
         for error in exception.errors()
     ]
 
-        
+
     problem = ProblemDetails(
         type="about:blank",
         title="Validation Error",

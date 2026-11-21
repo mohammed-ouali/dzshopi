@@ -1,0 +1,31 @@
+services:
+  postgres_test:
+    image: postgres:16-alpine
+    container_name: dzshopi_postgres_test
+    environment:
+      POSTGRES_DB: dzshopi_test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d dzshopi_test"]
+      interval: 3s
+      timeout: 2s
+      retries: 5
+
+  test:
+    build:
+      context: ./backend
+      target: test
+    container_name: dzshopi_test_runner
+    environment:
+      - APP_NAME=DzShopi
+      - DEBUG=true
+      - VERSION=0.1.0
+      - DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres_test:5432/dzshopi_test
+      - TEST_DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres_test:5432/dzshopi_test
+    depends_on:
+      postgres_test:
+        condition: service_healthy
+    command: ["pytest", "-v"]

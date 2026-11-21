@@ -1,15 +1,14 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime
-from sqlalchemy.sql import func
-
 from sqlalchemy import (
+    DateTime,
     ForeignKey,
     Index,
     Integer,
     UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.sql import func
 
 from app.core.database import Base
 from app.shared.model_mixins import TimestampMixin
