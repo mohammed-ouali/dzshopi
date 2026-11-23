@@ -22,3 +22,25 @@ dev = [
     "pytest-cov>=7.1.0",
     "ruff>=0.17.2",
 ]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+exclude = [
+    ".venv",
+    "alembic",
+    ".ruff_cache",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+ignore = [
+    "F821",  # ORM model forward references
+]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+pythonpath = ["."]

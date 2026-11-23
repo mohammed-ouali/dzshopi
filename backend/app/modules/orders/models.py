@@ -16,8 +16,8 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
-from app.shared.model_mixins import TimestampMixin
 from app.shared.enums import OrderStatus
+from app.shared.model_mixins import TimestampMixin
 
 
 class Order(TimestampMixin, Base):

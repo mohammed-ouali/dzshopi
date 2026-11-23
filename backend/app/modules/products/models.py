@@ -1,17 +1,17 @@
 
-from decimal import Decimal
 from datetime import datetime
+from decimal import Decimal
 
 from sqlalchemy import (
     Boolean,
     CheckConstraint,
+    DateTime,
     ForeignKey,
     Index,
     Integer,
     Numeric,
     String,
     Text,
-    DateTime,
     text,
 )
 from sqlalchemy.dialects.postgresql import JSONB

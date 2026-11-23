@@ -2,10 +2,10 @@
 from sqlalchemy import (
     CheckConstraint,
     ForeignKey,
+    Index,
     Integer,
     SmallInteger,
     Text,
-    Index,
     UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship

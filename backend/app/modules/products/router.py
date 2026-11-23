@@ -1,29 +1,49 @@
 
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, Path, Query, status
 from fastapi.responses import Response
 
 from app.core.exception_handlers import ProblemDetails
-from app.shared.pagination import PaginatedResponse
 from app.modules.products.schemas import (
     ProductCreate,
-    ProductUpdate,
-    ProductResponse,
     ProductDetailResponse,
-    ProductVariantCreate,
-    ProductVariantUpdate,
-    ProductVariantResponse,
     ProductImageCreate,
-    ProductImageUpdate,
     ProductImageResponse,
+    ProductImageUpdate,
+    ProductResponse,
+    ProductUpdate,
+    ProductVariantCreate,
+    ProductVariantResponse,
+    ProductVariantUpdate,
 )
+from app.shared.pagination import PaginatedResponse
 
 router = APIRouter(
     prefix="/products",
     tags=["Products"],
 )
 
+NOW = datetime(2026, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
 
 # Mock responses
+
+MOCK_IMAGES = [
+    ProductImageResponse(
+        id=1,
+        product_id=1,
+        image_url="https://example.com/phone-1.jpg",
+        imagekit_file_id="mock_file_001",
+        created_at=NOW,
+    ),
+    ProductImageResponse(
+        id=2,
+        product_id=1,
+        image_url="https://example.com/phone-1-side.jpg",
+        imagekit_file_id="mock_file_002",
+        created_at=NOW,
+    ),
+]
 
 MOCK_PRODUCTS = [
     ProductResponse(
@@ -32,6 +52,9 @@ MOCK_PRODUCTS = [
         category_id=1,
         description="A sleek smartphone with advanced features.",
         is_active=True,
+        primary_image=MOCK_IMAGES[0],
+        created_at=NOW,
+        updated_at=NOW,
     ),
     ProductResponse(
         id=2,
@@ -39,6 +62,9 @@ MOCK_PRODUCTS = [
         category_id=1,
         description="A powerful smartphone with a great camera.",
         is_active=True,
+        primary_image=None,
+        created_at=NOW,
+        updated_at=NOW,
     ),
     ProductResponse(
         id=3,
@@ -46,6 +72,9 @@ MOCK_PRODUCTS = [
         category_id=2,
         description="A comfortable cotton t-shirt.",
         is_active=True,
+        primary_image=None,
+        created_at=NOW,
+        updated_at=NOW,
     ),
 ]
 
@@ -55,33 +84,22 @@ MOCK_VARIANTS = [
         product_id=1,
         sku="PHONE-001",
         price=999.99,
-        stock=10,
+        stock_quantity=10,
         attributes={"memory": "128GB", "ram": "4GB"},
         is_active=True,
+        created_at=NOW,
+        updated_at=NOW,
     ),
     ProductVariantResponse(
         id=2,
         product_id=1,
         sku="PHONE-002",
         price=1099.99,
-        stock=5,
+        stock_quantity=5,
         attributes={"memory": "256GB", "ram": "4GB"},
         is_active=True,
-    ),
-]
-
-MOCK_IMAGES = [
-    ProductImageResponse(
-        id=1,
-        product_id=1,
-        url="https://example.com/phone-1.jpg",
-        file_id="mock_file_001",
-    ),
-    ProductImageResponse(
-        id=2,
-        product_id=1,
-        url="https://example.com/phone-1-side.jpg",
-        file_id="mock_file_002",
+        created_at=NOW,
+        updated_at=NOW,
     ),
 ]
 
@@ -130,7 +148,7 @@ async def get_products(
         items=MOCK_PRODUCTS,
         total=3,
         page=page,
-        size=limit,
+        limit=limit,
     )
 
 
@@ -154,6 +172,9 @@ async def get_product(
         category_id=1,
         description="A sleek smartphone with advanced features.",
         is_active=True,
+        primary_image=MOCK_IMAGES[0],
+        created_at=NOW,
+        updated_at=NOW,
         variants=MOCK_VARIANTS,
         images=MOCK_IMAGES,
     )
@@ -177,6 +198,9 @@ async def create_product(payload: ProductCreate):
         category_id=1,
         description="A newly created product.",
         is_active=True,
+        primary_image=None,
+        created_at=NOW,
+        updated_at=NOW,
     )
 
 
@@ -203,6 +227,9 @@ async def update_product(
         category_id=1,
         description="An updated product.",
         is_active=True,
+        primary_image=MOCK_IMAGES[0],
+        created_at=NOW,
+        updated_at=NOW,
     )
 
 
@@ -255,7 +282,7 @@ async def get_product_variants(
         items=MOCK_VARIANTS,
         total=2,
         page=page,
-        size=limit,
+        limit=limit,
     )
 
 
@@ -302,9 +329,11 @@ async def create_product_variant(
         product_id=1,
         sku="PHONE-003",
         price=1199.99,
-        stock=10,
+        stock_quantity=10,
         attributes={"memory": "512GB", "ram": "12GB"},
         is_active=True,
+        created_at=NOW,
+        updated_at=NOW,
     )
 
 
@@ -390,8 +419,9 @@ async def create_product_image(
     return ProductImageResponse(
         id=3,
         product_id=1,
-        url="https://example.com/new-product-image.jpg",
-        file_id="mock_file_003",
+        image_url="https://example.com/new-product-image.jpg",
+        imagekit_file_id="mock_file_003",
+        created_at=NOW,
     )
 
 
