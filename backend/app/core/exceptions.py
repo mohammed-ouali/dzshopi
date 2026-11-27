@@ -11,3 +11,9 @@ class DomainException(Exception):
             message if message is not None else self.default_message
         )
         super().__init__(self.message)
+
+
+class StorageError(DomainException):
+    status_code = status.HTTP_502_BAD_GATEWAY
+    title = "Storage Service Error"
+    default_message = "An error occurred while communicating with the storage provider."

@@ -6,10 +6,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 class Settings(BaseSettings):
-    app_name: str = "DzShopi"
-    debug: bool = True
-    database_url: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/dzshopi"
-    version: str = "0.1.0"
+    app_name: str
+    debug: bool
+    database_url: str
+    version: str
+    imagekit_public_key: str
+    imagekit_private_key: str
+    imagekit_url_endpoint: str
 
     model_config = SettingsConfigDict(
         env_file=(BASE_DIR / ".env", ".env"),
