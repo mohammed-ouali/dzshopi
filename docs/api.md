@@ -41,6 +41,6 @@ Manages products, their variants, and associated images.
 | Route | Description | Response Schema | Accepted Schema | Status Codes |
 |---|---|---|---|---|
 | `GET /products/{product_id}/images` | Retrieve all images belonging to a product. | `list[ProductImageResponse]` | Path: `product_id` | 200, 404 |
-| `POST /products/{product_id}/images` | Add an image to a product. | `ProductImageResponse` | Path: `product_id`; Body: `ProductImageCreate` | 201, 404, 422 |
+| `POST /products/{product_id}/images` | Upload an image file to ImageKit storage and attach to product. | `ProductImageResponse` | Path: `product_id`; Multipart Form: `file`, `alt_text`, `position` | 201, 404, 422, 502 |
 | `PATCH /products/{product_id}/images/{image_id}` | Partially update product image metadata. | `ProductImageResponse` | Path: `product_id`, `image_id`; Body: `ProductImageUpdate` | 200, 404, 422 |
 | `DELETE /products/{product_id}/images/{image_id}` | Delete a product image. | None | Path: `product_id`, `image_id` | 204, 404 |

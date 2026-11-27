@@ -17,15 +17,6 @@ services:
       timeout: 3s
       retries: 5
 
-  redis:
-    image: redis:7-alpine
-    container_name: dzshopi_redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redisdata:/var/lib/redis/data
-
   api:
     build:
       context: ./backend
@@ -41,13 +32,9 @@ services:
       - DEBUG=true
       - VERSION=0.1.0
       - DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/dzshopi
-      - REDIS_URL=redis://redis:6379/0
     depends_on:
       postgres:
         condition: service_healthy
-      redis:
-        condition: service_started
 
 volumes:
   pgdata:
-  redisdata:

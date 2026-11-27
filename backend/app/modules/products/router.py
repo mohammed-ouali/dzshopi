@@ -1,10 +1,8 @@
-
-from datetime import datetime, timezone
-
-from fastapi import APIRouter, Path, Query, status
+from fastapi import APIRouter, Depends, File, Form, Path, Query, UploadFile, status
 from fastapi.responses import Response
 
 from app.core.exception_handlers import ProblemDetails
+from app.modules.products.dependencies import get_product_service
 from app.modules.products.schemas import (
     ProductCreate,
     ProductDetailResponse,
@@ -17,6 +15,7 @@ from app.modules.products.schemas import (
     ProductVariantResponse,
     ProductVariantUpdate,
 )
+from app.modules.products.service import ProductService
 from app.shared.pagination import PaginatedResponse
 
 router = APIRouter(
@@ -24,87 +23,9 @@ router = APIRouter(
     tags=["Products"],
 )
 
-NOW = datetime(2026, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
-
-# Mock responses
-
-MOCK_IMAGES = [
-    ProductImageResponse(
-        id=1,
-        product_id=1,
-        image_url="https://example.com/phone-1.jpg",
-        imagekit_file_id="mock_file_001",
-        created_at=NOW,
-    ),
-    ProductImageResponse(
-        id=2,
-        product_id=1,
-        image_url="https://example.com/phone-1-side.jpg",
-        imagekit_file_id="mock_file_002",
-        created_at=NOW,
-    ),
-]
-
-MOCK_PRODUCTS = [
-    ProductResponse(
-        id=1,
-        name="Phone 1",
-        category_id=1,
-        description="A sleek smartphone with advanced features.",
-        is_active=True,
-        primary_image=MOCK_IMAGES[0],
-        created_at=NOW,
-        updated_at=NOW,
-    ),
-    ProductResponse(
-        id=2,
-        name="Phone 2",
-        category_id=1,
-        description="A powerful smartphone with a great camera.",
-        is_active=True,
-        primary_image=None,
-        created_at=NOW,
-        updated_at=NOW,
-    ),
-    ProductResponse(
-        id=3,
-        name="T-shirt 1",
-        category_id=2,
-        description="A comfortable cotton t-shirt.",
-        is_active=True,
-        primary_image=None,
-        created_at=NOW,
-        updated_at=NOW,
-    ),
-]
-
-MOCK_VARIANTS = [
-    ProductVariantResponse(
-        id=1,
-        product_id=1,
-        sku="PHONE-001",
-        price=999.99,
-        stock_quantity=10,
-        attributes={"memory": "128GB", "ram": "4GB"},
-        is_active=True,
-        created_at=NOW,
-        updated_at=NOW,
-    ),
-    ProductVariantResponse(
-        id=2,
-        product_id=1,
-        sku="PHONE-002",
-        price=1099.99,
-        stock_quantity=5,
-        attributes={"memory": "256GB", "ram": "4GB"},
-        is_active=True,
-        created_at=NOW,
-        updated_at=NOW,
-    ),
-]
-
 
 # Products
+
 
 @router.get(
     "",
@@ -143,10 +64,19 @@ async def get_products(
         default=None,
         description="Sort direction for the results.",
     ),
+    service: ProductService = Depends(get_product_service),
 ):
+    items, total = await service.list_products(
+        page=page,
+        limit=limit,
+        q=q,
+        category_id=category_id,
+        sort_by=sort_by,
+        order=order,
+    )
     return PaginatedResponse[ProductResponse](
-        items=MOCK_PRODUCTS,
-        total=3,
+        items=items,
+        total=total,
         page=page,
         limit=limit,
     )
@@ -165,19 +95,9 @@ async def get_product(
     product_id: int = Path(
         description="ID of the product to retrieve.",
     ),
+    service: ProductService = Depends(get_product_service),
 ):
-    return ProductDetailResponse(
-        id=1,
-        name="Phone 1",
-        category_id=1,
-        description="A sleek smartphone with advanced features.",
-        is_active=True,
-        primary_image=MOCK_IMAGES[0],
-        created_at=NOW,
-        updated_at=NOW,
-        variants=MOCK_VARIANTS,
-        images=MOCK_IMAGES,
-    )
+    return await service.get_product(product_id)
 
 
 @router.post(
@@ -187,21 +107,16 @@ async def get_product(
     response_model=ProductResponse,
     status_code=status.HTTP_201_CREATED,
     responses={
+        status.HTTP_404_NOT_FOUND: {"model": ProblemDetails},
         status.HTTP_409_CONFLICT: {"model": ProblemDetails},
         status.HTTP_422_UNPROCESSABLE_CONTENT: {"model": ProblemDetails},
     },
 )
-async def create_product(payload: ProductCreate):
-    return ProductResponse(
-        id=4,
-        name="New Product",
-        category_id=1,
-        description="A newly created product.",
-        is_active=True,
-        primary_image=None,
-        created_at=NOW,
-        updated_at=NOW,
-    )
+async def create_product(
+    payload: ProductCreate,
+    service: ProductService = Depends(get_product_service),
+):
+    return await service.create_product(payload)
 
 
 @router.patch(
@@ -220,17 +135,9 @@ async def update_product(
         description="ID of the product to update.",
     ),
     payload: ProductUpdate = ...,
+    service: ProductService = Depends(get_product_service),
 ):
-    return ProductResponse(
-        id=1,
-        name="Updated Product",
-        category_id=1,
-        description="An updated product.",
-        is_active=True,
-        primary_image=MOCK_IMAGES[0],
-        created_at=NOW,
-        updated_at=NOW,
-    )
+    return await service.update_product(product_id, payload)
 
 
 @router.delete(
@@ -246,11 +153,14 @@ async def delete_product(
     product_id: int = Path(
         description="ID of the product to deactivate.",
     ),
+    service: ProductService = Depends(get_product_service),
 ):
+    await service.delete_product(product_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 # Product Variants
+
 
 @router.get(
     "/{product_id}/variants",
@@ -277,10 +187,16 @@ async def get_product_variants(
         le=100,
         description="Number of variants to return per page.",
     ),
+    service: ProductService = Depends(get_product_service),
 ):
+    items, total = await service.list_variants(
+        product_id=product_id,
+        page=page,
+        limit=limit,
+    )
     return PaginatedResponse[ProductVariantResponse](
-        items=MOCK_VARIANTS,
-        total=2,
+        items=items,
+        total=total,
         page=page,
         limit=limit,
     )
@@ -302,8 +218,9 @@ async def get_product_variant(
     variant_id: int = Path(
         description="ID of the variant to retrieve.",
     ),
+    service: ProductService = Depends(get_product_service),
 ):
-    return MOCK_VARIANTS[0]
+    return await service.get_variant(product_id, variant_id)
 
 
 @router.post(
@@ -323,18 +240,9 @@ async def create_product_variant(
         description="ID of the product to which the variant belongs.",
     ),
     payload: ProductVariantCreate = ...,
+    service: ProductService = Depends(get_product_service),
 ):
-    return ProductVariantResponse(
-        id=3,
-        product_id=1,
-        sku="PHONE-003",
-        price=1199.99,
-        stock_quantity=10,
-        attributes={"memory": "512GB", "ram": "12GB"},
-        is_active=True,
-        created_at=NOW,
-        updated_at=NOW,
-    )
+    return await service.create_variant(product_id, payload)
 
 
 @router.patch(
@@ -356,8 +264,9 @@ async def update_product_variant(
         description="ID of the variant to update.",
     ),
     payload: ProductVariantUpdate = ...,
+    service: ProductService = Depends(get_product_service),
 ):
-    return MOCK_VARIANTS[0]
+    return await service.update_variant(product_id, variant_id, payload)
 
 
 @router.delete(
@@ -376,11 +285,14 @@ async def delete_product_variant(
     variant_id: int = Path(
         description="ID of the variant to deactivate.",
     ),
+    service: ProductService = Depends(get_product_service),
 ):
+    await service.delete_variant(product_id, variant_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 # Product Images
+
 
 @router.get(
     "/{product_id}/images",
@@ -395,33 +307,49 @@ async def get_product_images(
     product_id: int = Path(
         description="ID of the product whose images are being retrieved.",
     ),
+    service: ProductService = Depends(get_product_service),
 ):
-    return MOCK_IMAGES
+    return await service.list_images(product_id)
 
 
 @router.post(
     "/{product_id}/images",
     summary="Add product image",
-    description="Add an image to a product.",
+    description="Upload an image file to ImageKit storage and attach it to the product.",
     response_model=ProductImageResponse,
     status_code=status.HTTP_201_CREATED,
     responses={
         status.HTTP_404_NOT_FOUND: {"model": ProblemDetails},
         status.HTTP_422_UNPROCESSABLE_CONTENT: {"model": ProblemDetails},
+        status.HTTP_502_BAD_GATEWAY: {"model": ProblemDetails},
     },
 )
 async def create_product_image(
     product_id: int = Path(
         description="ID of the product to which the image belongs.",
     ),
-    payload: ProductImageCreate = ...,
+    file: UploadFile = File(
+        description="Image file to upload.",
+    ),
+    alt_text: str | None = Form(
+        default=None,
+        description="Alternative text for the image.",
+    ),
+    position: int = Form(
+        default=0,
+        ge=0,
+        description="Position/order index of the image.",
+    ),
+    service: ProductService = Depends(get_product_service),
 ):
-    return ProductImageResponse(
-        id=3,
-        product_id=1,
-        image_url="https://example.com/new-product-image.jpg",
-        imagekit_file_id="mock_file_003",
-        created_at=NOW,
+    file_bytes = await file.read()
+    file_name = file.filename or f"product_{product_id}_image"
+    return await service.upload_image(
+        product_id=product_id,
+        file=file_bytes,
+        file_name=file_name,
+        alt_text=alt_text,
+        position=position,
     )
 
 
@@ -443,8 +371,9 @@ async def update_product_image(
         description="ID of the image to update.",
     ),
     payload: ProductImageUpdate = ...,
+    service: ProductService = Depends(get_product_service),
 ):
-    return MOCK_IMAGES[0]
+    return await service.update_image(product_id, image_id, payload)
 
 
 @router.delete(
@@ -463,5 +392,7 @@ async def delete_product_image(
     image_id: int = Path(
         description="ID of the image to delete.",
     ),
+    service: ProductService = Depends(get_product_service),
 ):
+    await service.delete_image(product_id, image_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

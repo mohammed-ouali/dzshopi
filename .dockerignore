@@ -1,0 +1,38 @@
+# Dependencies
+node_modules
+.venv
+venv
+__pycache__
+*.py[cod]
+
+# Build and test output
+frontend/dist
+frontend/build
+backend/.pytest_cache
+backend/htmlcov
+.pytest_cache
+.coverage
+htmlcov
+
+# Git and editor files
+.git
+.gitignore
+.github
+.vscode
+.idea
+*.swp
+*.swo
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs and caches
+*.log
+logs
+.cache
+
+# Docker-related files
+docker-compose*.yml
+Dockerfile*
