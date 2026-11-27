@@ -1,5 +1,6 @@
 import os
 from typing import AsyncGenerator
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
@@ -12,6 +13,7 @@ from app.main import app
 from app.modules.carts.models import Cart, CartItem  # noqa: F401
 from app.modules.categories.models import Category  # noqa: F401
 from app.modules.orders.models import Order, OrderItem  # noqa: F401
+from app.modules.products.dependencies import get_storage
 from app.modules.products.models import Product, ProductImage, ProductVariant  # noqa: F401
 from app.modules.reviews.models import Review  # noqa: F401
 from app.modules.users.models import User  # noqa: F401
@@ -71,11 +73,23 @@ async def db_session(test_engine, init_tables) -> AsyncGenerator[AsyncSession, N
 
 
 @pytest_asyncio.fixture
-async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
+async def mock_storage() -> MagicMock:
+    storage = MagicMock()
+    storage.upload = AsyncMock(return_value=("https://ik.imagekit.io/test/img.jpg", "mock_file_id"))
+    storage.delete = AsyncMock(return_value=None)
+    return storage
+
+
+@pytest_asyncio.fixture
+async def client(
+    db_session: AsyncSession,
+    mock_storage: MagicMock,
+) -> AsyncGenerator[AsyncClient, None]:
     async def override_get_db() -> AsyncGenerator[AsyncSession, None]:
         yield db_session
 
     app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[get_storage] = lambda: mock_storage
 
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://testserver") as ac:
